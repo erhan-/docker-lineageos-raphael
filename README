@@ -1,0 +1,3 @@
+# Building lineageos in Docker
+
+change volume paths in your docker-compose.yml as you wish and run docker-compose up.

@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  lineageos:
+    container_name: lineageos
+    build: ./docker-lineage-cicd
+    env_file:
+      ./lineageos.env
+    volumes:
+      - /raid/lineageos/lineage:/srv/src
+      - /raid/lineageos/zips:/srv/zips
+      - /raid/lineageos/logs:/srv/logs
+      - /raid/lineageos/ccache:/srv/ccache
+      - /raid/lineageos/keys:/srv/keys
+      - ./manifests:/srv/local_manifests
+    network_mode: "host"
