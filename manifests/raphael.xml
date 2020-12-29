@@ -2,5 +2,4 @@
 <manifest>
   <project name="raphael-devs/android_device_xiaomi_raphael" path="device/xiaomi/raphael" remote="github" revision="lineage-18.0" />
   <project name="raphael-devs/android_vendor_xiaomi" path="vendor/xiaomi" remote="github"  revision="lineage-18.0"  />
-  <project name="ShapeShiftOS-Devices/kernel_xiaomi_sm8150" path="kernel/xiaomi/raphael" remote="github"  revision="android_11" />
 </manifest>
