@@ -86,6 +86,7 @@ for branch in ${BRANCH_NAME//,/ }; do
 
   if [ -n "$branch" ] && [ -n "$devices" ]; then
     vendor=lineage
+    permissioncontroller_patch=""
     case "$branch" in
       cm-14.1*)
         vendor="cm"
@@ -108,15 +109,11 @@ for branch in ${BRANCH_NAME//,/ }; do
         android_version="10"
         patch_name="android_frameworks_base-Q.patch"
         ;;
-      lineage-18.0*)
-        themuppets_branch="lineage-18.0"
-        android_version="11"
-        patch_name="android_frameworks_base-R.patch"
-        ;;
       lineage-18.1*)
         themuppets_branch="lineage-18.1"
         android_version="11"
         patch_name="android_frameworks_base-R.patch"
+        permissioncontroller_patch="packages_apps_PermissionController-R.patch"
         ;;
       *)
         echo ">> [$(date)] Building branch $branch is not (yet) suppported"
@@ -133,7 +130,7 @@ for branch in ${BRANCH_NAME//,/ }; do
     echo ">> [$(date)] Devices: $devices"
 
     # Remove previous changes of vendor/cm, vendor/lineage and frameworks/base (if they exist)
-    for path in "vendor/cm" "vendor/lineage" "frameworks/base"; do
+    for path in "vendor/cm" "vendor/lineage" "frameworks/base" "packages/apps/PermissionController"; do
       if [ -d "$path" ]; then
         cd "$path"
         git reset -q --hard
@@ -185,13 +182,29 @@ for branch in ${BRANCH_NAME//,/ }; do
       if [ "$SIGNATURE_SPOOFING" = "yes" ]; then
         echo ">> [$(date)] Applying the standard signature spoofing patch ($patch_name) to frameworks/base"
         echo ">> [$(date)] WARNING: the standard signature spoofing patch introduces a security threat"
-        patch --quiet -p1 -i "/root/signature_spoofing_patches/$patch_name"
+        patch --quiet --force -p1 -i "/root/signature_spoofing_patches/$patch_name"
       else
         echo ">> [$(date)] Applying the restricted signature spoofing patch (based on $patch_name) to frameworks/base"
         sed 's/android:protectionLevel="dangerous"/android:protectionLevel="signature|privileged"/' "/root/signature_spoofing_patches/$patch_name" | patch --quiet -p1
       fi
+      if [ $? -ne 0 ]; then
+        echo ">> [$(date)] ERROR: failed to apply $patch_name"
+        exit 1
+      fi
       git clean -q -f
       cd ../..
+
+      if ! [ -z "$permissioncontroller_patch" ]; then
+        cd packages/apps/PermissionController
+        echo ">> [$(date)] Applying the PermissionController patch ($permissioncontroller_patch) to packages/apps/PermissionController"
+        patch --quiet --force -p1 -i "/root/signature_spoofing_patches/$permissioncontroller_patch"
+        if [ $? -ne 0 ]; then
+          echo ">> [$(date)] ERROR: failed to apply $permissioncontroller_patch"
+          exit 1
+        fi
+        git clean -q -f
+        cd ../../..
+      fi
 
       # Override device-specific settings for the location providers
       mkdir -p "vendor/$vendor/overlay/microg/frameworks/base/core/res/res/values/"
@@ -311,6 +324,13 @@ for branch in ${BRANCH_NAME//,/ }; do
             sha256sum "$build" > "$ZIP_DIR/$zipsubdir/$build.sha256sum"
           done
           find . -maxdepth 1 -name 'lineage-*.zip*' -type f -exec mv {} "$ZIP_DIR/$zipsubdir/" \; &>> "$DEBUG_LOG"
+          recovery_name="lineage-$los_ver-$builddate-$RELEASE_TYPE-$codename-recovery.img"
+          for image in recovery boot; do
+            if [ -f "$image.img" ]; then
+              cp "$image.img" "$ZIP_DIR/$zipsubdir/$recovery_name"
+              break
+            fi
+          done &>> "$DEBUG_LOG"
           cd "$source_dir"
           build_successful=true
         else
