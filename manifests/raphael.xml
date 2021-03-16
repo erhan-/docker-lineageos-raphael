@@ -6,10 +6,4 @@
   <project name="raphael-devs/android_device_xiaomi_raphael" path="device/xiaomi/raphael" remote="github" revision="lineage-18.0" />
   <project name="raphael-devs/android_vendor_xiaomi" path="vendor/xiaomi" remote="github"  revision="lineage-18.0"  />
 
-  <!-- Lineage Repos -->
-
-  <project path="vendor/qcom/opensource/commonsys-intf/bluetooth" name="LineageOS/android_vendor_qcom_opensource_bluetooth-commonsys-intf" groups="qcom,pdk-qcom" remote="github" />
-  <project path="vendor/qcom/opensource/commonsys/bluetooth_ext" name="LineageOS/android_vendor_qcom_opensource_bluetooth_ext" groups="qcom,pdk-qcom" remote="github" />
-  <project path="vendor/qcom/opensource/commonsys/packages/apps/Bluetooth" name="LineageOS/android_vendor_qcom_opensource_packages_apps_Bluetooth" groups="qcom,pdk-qcom" remote="github" />
-  <project path="vendor/qcom/opensource/commonsys/system/bt" name="LineageOS/android_vendor_qcom_opensource_system_bt" groups="qcom,pdk-qcom" remote="github" />
 </manifest>
