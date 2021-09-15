@@ -3,7 +3,9 @@
 
   <!-- Device Specific Repos -->
 
-  <project name="raphael-devs/android_device_xiaomi_raphael" path="device/xiaomi/raphael" remote="github" revision="lineage-18.0" />
-  <project name="raphael-devs/android_vendor_xiaomi" path="vendor/xiaomi" remote="github"  revision="lineage-18.0"  />
+  <project path="device/xiaomi/raphael" name="EnglezosRaphael/device_xiaomi_raphael" remote="github" revision="lineage-18.1" />
+  <project path="vendor/xiaomi/raphael" name="EnglezosRaphael/vendor_xiaomi_raphael" remote="github" revision="lineage-18.1" />
+  <project path="kernel/xiaomi/raphael" name="penglezos/kernel_xiaomi_raphael" remote="github" revision="lineage-18.1" />
+  <project path="hardware/xiaomi" name="LineageOS/android_hardware_xiaomi" remote="github" revision="lineage-18.1" />
 
 </manifest>
