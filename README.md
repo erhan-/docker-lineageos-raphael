@@ -8,7 +8,9 @@ This project is meant to give us more freedom and security. It will allow everon
 
 ## Current State
 
-Build is successful but boots only to fastboot. 
+Build is successful and boots.
+
+No current bugs known !
 
 ## Requirements
 
