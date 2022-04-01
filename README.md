@@ -8,7 +8,7 @@ This project is meant to give us more freedom and security. It will allow everon
 
 ## Current State
 
-Build is successful and boots.
+Repo in manifest file have changed. Untested and propably wont work because the lineage-18.1 branches are not there anymore.
 
 No current bugs known !
 
